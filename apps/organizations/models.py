@@ -8,6 +8,9 @@ class City(BaseModel):
     name = models.CharField(verbose_name=u'城市', max_length=20)
     desc = models.CharField(verbose_name=u'描述', max_length=200)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = '城市'
         verbose_name_plural = verbose_name
@@ -31,6 +34,8 @@ class CourseOrg(BaseModel):
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return self.name
 
 class Teacher(BaseModel):
     org = models.ForeignKey(CourseOrg, verbose_name='所属机构', on_delete=models.CASCADE)
@@ -47,3 +52,6 @@ class Teacher(BaseModel):
     class Meta:
         verbose_name = '教师'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
