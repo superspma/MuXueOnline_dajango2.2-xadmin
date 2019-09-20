@@ -6,7 +6,7 @@ from apps.courses.models import Course, Lesson, Video, CourseResource
 class GlobalSetting(object):
     site_title = '慕学后台管理系统'
     site_footer = '慕学在线网'
-    menu_style = 'accordion'
+    # menu_style = 'accordion'
 
 
 # 设置后台管理页面皮肤
