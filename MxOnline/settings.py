@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.organizations.apps.OrganizationsConfig',
     'crispy_forms',
     'xadmin.apps.XAdminConfig',
+    'captcha',
 ]
 
 MIDDLEWARE = [
@@ -106,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL='users.UserProfile'
+AUTH_USER_MODEL = 'users.UserProfile'
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -127,3 +128,12 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# 短信验证网站相关设置
+yp_apikey = 'd6c4ddbf50ab36611d2f52041a0b949e'
+
+# Redis 相关设置
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+# 1 如果重启django变量不存在
+# 2 随着验证码越来越多，内存占用大，验证码过期需要删除

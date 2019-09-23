@@ -1,10 +1,67 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 
-from apps.users.forms import LoginForm
+from apps.users.forms import LoginForm, DynamicLoginForm, DynamicLoginPostForm
+from apps.users.models import UserProfile
+from apps.utils.FeiGe import send_single_sms
+from apps.utils.random_str import gencrate_random
+
+from MxOnline.settings import yp_apikey, REDIS_HOST, REDIS_PORT
+import redis
+
+
+class DynamicLoginView(View):
+    def post(self, request, *args, **kwargs):
+        login_form = DynamicLoginPostForm(request.POST)
+        dynamic_login = True
+        if login_form.is_valid():
+            # 没有注册帐号依然可以登录
+            mobile = login_form.cleaned_data['mobile']
+            existed_user = UserProfile.objects.filter(mobile=mobile)
+            if existed_user:
+                user = existed_user[0]
+
+            else:
+                # 创建一个用户
+                user = UserProfile(username=mobile)
+                password = gencrate_random(10, 2)
+                user.set_password(password)
+                user.mobile = mobile
+                user.save()
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+
+        else:
+            d_form = DynamicLoginForm()  # 生成图片验证码
+            return render(request, 'login.html', {
+                'login_form': login_form,
+                'd_form': d_form,
+                'dynamic_login': dynamic_login})
+
+
+class SendSmsView(View):
+    def post(self, request, *args, **kwargs):
+        send_sms_form = DynamicLoginForm(request.POST)
+        re_dict = {}
+        if send_sms_form.is_valid():
+            mobile = send_sms_form.cleaned_data['mobile']
+            # 随机生成验证码
+            code = gencrate_random(4, 0)
+            re_json = send_single_sms(yp_apikey, code=code, mobile=mobile)
+            if re_json['code'] == 0:
+                re_dict['status'] = 'success'
+                r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, charset='utf8', decode_responses='utf8')
+                r.set(str(mobile), code)
+                r.expire(str(mobile), 60 * 5)  # 设置短信验证码过期时间5分钟
+            else:
+                re_dict['msg'] = re_json['msg']
+        else:
+            for key, value in send_sms_form.errors.items():
+                re_dict[key] = value[0]
+        return JsonResponse(re_dict)
 
 
 class LogoutView(View):
@@ -17,7 +74,9 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse('index'))
-        return render(request, 'login.html', locals())
+        login_form = DynamicLoginForm()  # 生成图片验证码
+        return render(request, 'login.html',
+                      {'login_form': login_form})
 
     def post(self, request, *args, **kwargs):
         # 表单验证

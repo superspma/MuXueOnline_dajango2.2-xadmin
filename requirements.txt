@@ -1,2 +1,4 @@
+redis
+captcha
 django==2.2
 mysqlclient
