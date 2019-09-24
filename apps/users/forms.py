@@ -3,6 +3,34 @@ from django import forms
 from captcha.fields import CaptchaField
 
 from MxOnline.settings import REDIS_HOST, REDIS_PORT
+from apps.users.models import UserProfile
+
+
+class RegisterGetForm(forms.Form):
+    captcha = CaptchaField()
+
+
+class RegisterPostForm(forms.Form):
+    mobile = forms.CharField(required=True, min_length=11, max_length=11)
+    code = forms.CharField(required=True, min_length=4, max_length=4)
+    password = forms.CharField(required=True, )
+
+    def clean_code(self):
+        mobile = self.data.get('mobile')
+        code = self.data.get('code')
+        r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0, charset='utf8', decode_responses='utf8')
+        redis_code = r.get(str(mobile))
+        if code != redis_code:
+            raise forms.ValidationError('验证码错误！')
+        return code
+
+    def clean_mobile(self):
+        mobile = self.data.get('mobile')
+        # 验证手机号码是否已经注册
+        user = UserProfile.objects.filter(mobile=mobile)
+        if user:
+            raise forms.ValidationError('该手机号码已注册！')
+        return mobile
 
 
 class LoginForm(forms.Form):
