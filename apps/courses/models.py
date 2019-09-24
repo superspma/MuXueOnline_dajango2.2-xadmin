@@ -4,10 +4,12 @@ from django.db import models
 
 from apps.users.models import BaseModel
 from apps.organizations.models import Teacher
+from apps.organizations.models import CourseOrg
 
 
 class Course(BaseModel):
     teacher = models.ForeignKey(Teacher, verbose_name='讲师', on_delete=models.CASCADE)
+    course_org = models.ForeignKey(CourseOrg, verbose_name='课程机构', null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(verbose_name='课程名', max_length=50)
     desc = models.CharField(verbose_name='课程描述', max_length=300)
     learn_times = models.IntegerField(verbose_name='学习时长（分钟数）', default=0)
@@ -23,6 +25,7 @@ class Course(BaseModel):
 
     detail = models.TextField(verbose_name='课程详情')
     image = models.ImageField(verbose_name='封面图', upload_to='courses/%Y%m', max_length=100)
+    is_classics = models.BooleanField(verbose_name='是否经典', default=False)
 
     class Meta:
         verbose_name = '课程信息'

@@ -20,7 +20,7 @@ class CourseOrg(BaseModel):
     name = models.CharField(verbose_name='机构名称', max_length=50)
     desc = models.TextField(verbose_name='描述')
     tag = models.CharField(verbose_name='机构标签', default='全国知名', max_length=10)
-    calegory = models.CharField(verbose_name='机构类别', default='pxjg', max_length=4,
+    category = models.CharField(verbose_name='机构类别', default='pxjg', max_length=4,
                                 choices=(('pxjg', '培训机构'), ('gr', '个人'), ('gx', '高校')))
     click_nums = models.IntegerField(verbose_name='点击数', default=0)
     fav_nums = models.IntegerField(verbose_name='收藏数', default=0)
@@ -30,12 +30,21 @@ class CourseOrg(BaseModel):
     course_nums = models.IntegerField(verbose_name='课程数', default=0)
     city = models.ForeignKey(City, verbose_name='所在城市', on_delete=models.CASCADE)
 
+    is_auth = models.BooleanField(verbose_name='是否认证', default=False)
+    is_gold = models.BooleanField(verbose_name='是否金牌', default=False)
+
+
     class Meta:
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
 
+    def courses(self):
+        courses = self.course_set.filter(is_classics=True)[:3]
+        return courses
+
     def __str__(self):
         return self.name
+
 
 class Teacher(BaseModel):
     org = models.ForeignKey(CourseOrg, verbose_name='所属机构', on_delete=models.CASCADE)

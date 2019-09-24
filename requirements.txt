@@ -2,3 +2,5 @@ redis
 captcha
 django==2.2
 mysqlclient
+django-pure-pagination
+pillow

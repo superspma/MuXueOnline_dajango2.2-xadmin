@@ -16,16 +16,16 @@ class BaseSettings(object):
 
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'teacher__name']
-    search_fields = ['name', 'desc', 'detail', 'degree', 'students']
-    list_filter = ['name', 'teacher__name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'teacher']
+    search_fields = ['name', 'teacher', 'desc', 'detail', 'degree', 'students']
+    list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
     list_editable = ['degree', 'desc']
 
 
 class LessonAdmin(object):
     list_display = ['course', 'name', 'add_time']
     search_fields = ['course', 'name']
-    list_filter = ['course__name', 'name', 'add_time']
+    list_filter = ['course', 'name', 'add_time']
 
 
 class VideoAdmin(object):
