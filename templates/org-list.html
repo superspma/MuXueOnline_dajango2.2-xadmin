@@ -52,9 +52,9 @@
                     <div class="layout">
                         <div class="head">
                             <ul class="tab_header">
-                                <li class="active"><a href="?ct=&city=">全部</a></li>
-                                <li class=""><a href="?sort=students&ct=&city=">学习人数 &#8595;</a></li>
-                                <li class=""><a href="?sort=courses&ct=&city=">课程数 &#8595;</a></li>
+                                <li class="{% ifequal sort '' %}active{% endifequal %}"><a href="?ct=&city=">全部</a></li>
+                                <li class="{% ifequal sort 'students' %}active{% endifequal %}"><a href="?sort=students&ct={{ category }}&city={{ city_id }}">学习人数 &#8595;</a></li>
+                                <li class="{% ifequal sort 'courses' %}active{% endifequal %}"><a href="?sort=courses&ct{{ category }}=&city={{ city_id }}">课程数 &#8595;</a></li>
                             </ul>
                         </div>
 
@@ -145,38 +145,21 @@
                     </div>
                     <p class="error company-tips" id="jsCompanyTips"></p>
                     <input class="btn" type="text" id="jsStayBtn" value="立即咨询 >"/>
+                    {% csrf_token %}
                 </form>
             </div>
 
             <div class="right companyrank layout">
                 <div class="head">授课机构排名</div>
-
-
+                {% for org in hot_org %}
                 <dl class="des">
-                    <dt class="num fl">1</dt>
+                    <dt class="num fl">{{ forloop.counter }}</dt>
                     <dd>
-                        <a href="/company/2/"><h1>慕课网</h1></a>
-                        <p>北京市</p>
+                        <a href="/company/2/"><h1>{{ org.name }}</h1></a>
+                        <p>{{ org.address }}</p>
                     </dd>
                 </dl>
-
-                <dl class="des">
-                    <dt class="num fl">2</dt>
-                    <dd>
-                        <a href="/company/2/"><h1>慕课网2</h1></a>
-                        <p>深圳市</p>
-                    </dd>
-                </dl>
-
-                <dl class="des">
-                    <dt class="num fl">3</dt>
-                    <dd>
-                        <a href="/company/2/"><h1>北京大学</h1></a>
-                        <p>北京市</p>
-                    </dd>
-                </dl>
-
-
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -189,7 +172,7 @@
                     $.ajax({
                         cache: false,
                         type: "POST",
-                        url: "/org/add_ask/",
+                        url: "{% url 'org:add_ask' %}",
                         data: $('#jsStayForm').serialize(),
                         async: true,
                         success: function (data) {
