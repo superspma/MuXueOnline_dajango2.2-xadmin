@@ -33,7 +33,6 @@ class CourseOrg(BaseModel):
     is_auth = models.BooleanField(verbose_name='是否认证', default=False)
     is_gold = models.BooleanField(verbose_name='是否金牌', default=False)
 
-
     class Meta:
         verbose_name = '课程机构'
         verbose_name_plural = verbose_name
@@ -64,3 +63,7 @@ class Teacher(BaseModel):
 
     def __str__(self):
         return self.name
+
+    def course_nums(self):
+        course_nums = self.course_set.all().count()
+        return course_nums
