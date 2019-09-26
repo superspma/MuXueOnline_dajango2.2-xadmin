@@ -34,6 +34,9 @@ class Course(BaseModel):
     def __str__(self):
         return self.name
 
+    def lesson_nums(self):
+        return self.lesson_set.all().count()
+
 
 class Lesson(BaseModel):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)

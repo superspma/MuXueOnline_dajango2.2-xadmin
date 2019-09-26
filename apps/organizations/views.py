@@ -3,6 +3,8 @@ from django.views.generic.base import View
 
 from pure_pagination import Paginator, PageNotAnInteger
 from django.http import JsonResponse
+
+from apps.operations.models import UserFavorite
 from apps.organizations.forms import AddAskForm
 from apps.organizations.models import CourseOrg, City
 
@@ -14,10 +16,18 @@ class OrgDescView(View):
         course_org.click_nums += 1
         course_org.save()
 
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(
+                    user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-desc.html', {
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav
         })
+
 
 class OrgCourseView(View):
     def get(self, request, org_id, *args, **kwargs):
@@ -35,11 +45,19 @@ class OrgCourseView(View):
         p = Paginator(all_courses, per_page=5, request=request)
         courses = p.page(page)
 
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(
+                    user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-course.html', {
             'all_courses': courses,
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav
         })
+
 
 class OrgTeacherView(View):
     def get(self, request, org_id, *args, **kwargs):
@@ -50,10 +68,17 @@ class OrgTeacherView(View):
 
         all_teacher = course_org.teacher_set.all()
 
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(
+                    user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-teachers.html', {
             'all_teacher': all_teacher,
             'course_org': course_org,
             'current_page': current_page,
+            'has_fav': has_fav
         })
 
 
@@ -67,11 +92,18 @@ class OrgHomeView(View):
         all_course = course_org.course_set.all()[:3]
         all_teacher = course_org.teacher_set.all()[:1]
 
+        has_fav = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(
+                    user=request.user, fav_id=course_org.id, fav_type=2):
+                has_fav = True
+
         return render(request, 'org-detail-homepage.html', {
             'all_course': all_course,
             'all_teacher': all_teacher,
             'course_org': course_org,
-            'current_page': current_page
+            'current_page': current_page,
+            'has_fav': has_fav
         })
 
 
@@ -127,6 +159,7 @@ class OrgView(View):
             page = 1
         p = Paginator(all_orgs, per_page=5, request=request)
         orgs = p.page(page)
+
         return render(request, 'org-list.html',
                       {'all_orgs': orgs,
                        'org_counts': org_counts,
@@ -134,5 +167,5 @@ class OrgView(View):
                        'category': category,
                        'city_id': city_id,
                        'sort': sort,
-                       'hot_org': hot_org
+                       'hot_org': hot_org,
                        })

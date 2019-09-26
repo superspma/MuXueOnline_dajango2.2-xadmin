@@ -26,14 +26,14 @@
                     {% if request.user.is_authenticated %}
                         <div class="personal">
                             <dl class="user fr">
-                                <dd>bobby<img class="down fr" src="/static/images/top_down.png"/></dd>
-                                <dt><img width="20" height="20" src="/static/media/image/2016/12/default_big_14.png"/>
+                                <dd>bobby<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                <dt><img width="20" height="20" src="{% static 'media/image/2016/12/default_big_14.png' %}"/>
                                 </dt>
                             </dl>
                             <div class="userdetail">
                                 <dl>
                                     <dt><img width="80" height="80"
-                                             src="/static/media/image/2016/12/default_big_14.png"/></dt>
+                                             src="{% static 'media/image/2016/12/default_big_14.png' %}"/></dt>
                                     <dd>
                                         <h2>django</h2>
                                         <p>bobby</p>
@@ -56,7 +56,7 @@
 
             <div class="middle">
                 <div class="wp">
-                    <a href="index.html"><img class="fl" src="/static/images/logo.jpg"/></a>
+                    <a href="index.html"><img class="fl" src="{% static 'images/logo.jpg' %}"/></a>
                     <div class="searchbox fr">
                         <div class="selectContainer fl">
                             <span class="selectOption" id="jsSelectOption" data-value="course">
@@ -69,7 +69,7 @@
                             </ul>
                         </div>
                         <input id="search_keywords" class="fl" type="text" value="" placeholder="请输入搜索内容"/>
-                        <img class="search_btn fr" id="jsSearchBtn" src="/static/images/search_btn.png"/>
+                        <img class="search_btn fr" id="jsSearchBtn" src="{% static 'images/search_btn.png' %}"/>
                     </div>
                 </div>
             </div>
@@ -81,8 +81,8 @@
                         <ul>
                             <li class="active"><a href="{% url 'index' %}">首页</a></li>
                             <li>
-                                <a href="course-list.html">
-                                    公开课<img class="hot" src="/static/images/nav_hot.png">
+                                <a href="{% url 'course:list' %}">
+                                    公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
                                 </a>
                             </li>
                             <li>
@@ -109,35 +109,35 @@
                     <li>
                         <a href="http://www.imooc.com">
                             <img width="1200" height="478"
-                                 src="/static/media/banner/2016/11/57a801860001c34b12000460.jpg"/>
+                                 src="{% static 'media/banner/2016/11/57a801860001c34b12000460.jpg' %}"/>
                         </a>
                     </li>
 
                     <li>
                         <a href="http://www.projectsedu.com">
                             <img width="1200" height="478"
-                                 src="/static/media/banner/2016/11/57aa86a0000145c512000460.jpg"/>
+                                 src="{% static 'media/banner/2016/11/57aa86a0000145c512000460.jpg' %}"/>
                         </a>
                     </li>
 
                     <li>
                         <a href="http://www.projectsedu.com">
                             <img width="1200" height="478"
-                                 src="/static/media/banner/2016/11/57a801860001c34b12000460_z4Vb8zl.jpg"/>
+                                 src="{% static 'media/banner/2016/11/57a801860001c34b12000460_z4Vb8zl.jpg' %}"/>
                         </a>
                     </li>
 
                     <li>
                         <a href="http://www.projectsedu.com">
                             <img width="1200" height="478"
-                                 src="/static/media/banner/2016/11/57aa86a0000145c512000460_nMwvoQD.jpg"/>
+                                 src="{% static 'media/banner/2016/11/57aa86a0000145c512000460_nMwvoQD.jpg' %}"/>
                         </a>
                     </li>
 
                     <li>
                         <a href="http://www.projectsedu.com">
                             <img width="1200" height="478"
-                                 src="/static/media/banner/2016/11/57aa86a0000145c512000460_GXIBATC.jpg"/>
+                                 src="{% static 'media/banner/2016/11/57aa86a0000145c512000460_GXIBATC.jpg' %}"/>
                         </a>
                     </li>
 
@@ -158,19 +158,19 @@
     <div class="wp">
         <ul class="feature">
             <li class="feature1">
-                <img class="pic" src="/static/images/feature1.png"/>
+                <img class="pic" src="{% static 'images/feature1.png' %}"/>
                 <p class="center">专业权威</p>
             </li>
             <li class="feature2">
-                <img class="pic" src="/static/images/feature2.png"/>
+                <img class="pic" src="{% static 'images/feature2.png' %}"/>
                 <p class="center">课程最新</p>
             </li>
             <li class="feature3">
-                <img class="pic" src="/static/images/feature3.png"/>
+                <img class="pic" src="{% static 'images/feature3.png' %}"/>
                 <p class="center">名师授课</p>
             </li>
             <li class="feature4">
-                <img class="pic" src="/static/images/feature4.png"/>
+                <img class="pic" src="{% static 'images/feature4.png' %}"/>
                 <p class="center">数据真实</p>
             </li>
         </ul>
@@ -184,7 +184,7 @@
             <h1>公开课程</h1>
             <div class="module1 eachmod">
                 <div class="module1_1 left">
-                    <img width="228" height="614" src="/static/images/module1_1.jpg"/>
+                    <img width="228" height="614" src="{% static 'images/module1_1.jpg' %}"/>
                     <p class="fisrt_word">名师授课<br/>专业权威</p>
                     <a class="more" href="course-list.html">查看更多课程 ></a>
                 </div>
@@ -196,7 +196,7 @@
                                 <li>
                                     <a href="course-detail.html">
                                         <img width="470" height="300"
-                                             src="/static/media/courses/2016/12/python文件处理.jpg"/>
+                                             src="{% static 'media/courses/2016/12/python文件处理.jpg' %}"/>
                                     </a>
                                 </li>
 
