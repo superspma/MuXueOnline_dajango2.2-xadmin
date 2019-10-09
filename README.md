@@ -13,5 +13,5 @@ MxOline
 
 ### 说明
 
->强力Django+杀手级xadmin开发在线教育网站
+>强力Django2.2+xadmin开发在线教育网站
  ps 目前正在开发中...
